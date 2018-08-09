@@ -12,7 +12,8 @@ module.exports = {
     'computed-property-spacing': ['error', 'always'],
     'space-in-parens': ['error', 'always'],
     'array-bracket-spacing': ['error', 'always'],
-    'comma-dangle': ['error', 'always'],
+    'comma-dangle': ['error', 'always-multiline'],
+    'indent': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
