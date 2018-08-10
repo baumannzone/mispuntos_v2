@@ -22,4 +22,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-src/config/index.js
+
+src/config/settings.js
