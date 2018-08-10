@@ -4,7 +4,7 @@ import Home from '../views/Home/Index.vue'
 
 Vue.use( Router )
 
-export default new Router( {
+const router = new Router( {
   routes: [
     {
       path: '/',
@@ -24,5 +24,16 @@ export default new Router( {
       name: 'Login',
       component: () => import( '../views/Auth/Login' ),
     },
+    {
+      path: '/logout',
+      name: 'Logout',
+    },
   ],
 } )
+
+router.beforeEach( ( to, from, next ) => {
+  console.debug( `${from.name} => ${to.name}` )
+  next()
+} )
+
+export default router
