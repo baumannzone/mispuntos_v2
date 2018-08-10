@@ -29,6 +29,7 @@
 
 <script>
   import rules from '@/helpers/rules'
+  import { db } from '@/config/'
 
   export default {
     name: 'Login',
@@ -46,6 +47,17 @@
       submit ( form ) {
         if ( this.$refs.form.validate() ) {
           console.log( 'VALID FORM' )
+          db.collection( 'users' ).add( {
+            first: 'Ada',
+            last: 'Lovelace',
+            born: 1815,
+          } )
+            .then( function ( docRef ) {
+              console.log( 'Document written with ID: ', docRef.id )
+            } )
+            .catch( function ( error ) {
+              console.error( 'Error adding document: ', error )
+            } )
         }
       },
     },
