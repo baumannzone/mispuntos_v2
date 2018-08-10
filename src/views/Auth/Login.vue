@@ -5,7 +5,7 @@
         <h1>Login</h1>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 text-xs-right>
-        <v-form v-model="isValid">
+        <v-form v-model="isValid" ref="form">
           <v-text-field
             v-model="formData.email"
             :rules="[rules.required(), rules.email()]"
@@ -20,7 +20,7 @@
             autocomplete
             required
           ></v-text-field>
-          <v-btn @click="submit">submit</v-btn>
+          <v-btn @click="submit('form')">submit</v-btn>
         </v-form>
       </v-flex>
     </v-layout>
@@ -43,8 +43,10 @@
       }
     },
     methods: {
-      submit ( to ) {
-        this.$router.push( { name: to } )
+      submit ( form ) {
+        if ( this.$refs.form.validate() ) {
+          console.log( 'VALID FORM' )
+        }
       },
     },
   }
