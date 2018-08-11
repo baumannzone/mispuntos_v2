@@ -3,7 +3,7 @@
     <v-toolbar app>
       <v-toolbar-title v-text="$t('title')" @click="goTo('Home')"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="goTo('Login')">
+      <v-btn icon @click="goTo('Login')" id="btn-login">
         <v-icon>account_circle</v-icon>
       </v-btn>
       <v-btn icon @click="goTo('Admin')">

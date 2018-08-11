@@ -20,7 +20,7 @@
             autocomplete
             required
           ></v-text-field>
-          <v-btn @click="submit('form')">submit</v-btn>
+          <v-btn @click="submit('form')" data-cy="submit">submit</v-btn>
         </v-form>
       </v-flex>
     </v-layout>
