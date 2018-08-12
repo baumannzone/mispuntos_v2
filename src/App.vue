@@ -1,7 +1,11 @@
 <template>
   <v-app>
     <v-toolbar app>
-      <v-toolbar-title v-text="$t('title')" @click="goTo('Home')"></v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">
+          <img id="favicon" src="@/assets/logo.png" width="30"/> {{ $t('title') }}
+        </router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="goTo('Login')" data-cy="login">
         <v-icon>account_circle</v-icon>
@@ -19,7 +23,7 @@
       <span class="ml-2">2018</span>
       <v-spacer></v-spacer>
       <span class="mr-2">
-        <a href="https://twitter.com/baumannzone">@baumannzone</a>
+        <a href="https://twitter.com/baumannzone" target="_blank">@baumannzone</a>
       </span>
     </v-footer>
     <Snackbar></Snackbar>
@@ -48,6 +52,9 @@
 </script>
 
 <style scoped>
+  #favicon {
+    vertical-align: top;
+  }
 
   .slide-fade-enter-active {
     transition: all .2s linear;
