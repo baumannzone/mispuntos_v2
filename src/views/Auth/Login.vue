@@ -20,7 +20,7 @@
             autocomplete
             required
           ></v-text-field>
-          <v-btn @click="submit('form')" data-cy="submit">submit</v-btn>
+          <v-btn @click="submit('form')" data-cy="submit" :loading="loading">submit</v-btn>
         </v-form>
       </v-flex>
     </v-layout>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import rules from '@/helpers/rules'
-  import { db } from '@/config/'
 
   export default {
     name: 'Login',
@@ -39,25 +39,20 @@
     data () {
       return {
         isValid: true,
-        formData: {},
+        formData: {
+          email: 'jorge.baumann.aguilar@gmail.com',
+        },
         rules: [],
       }
+    },
+    computed: {
+      ...mapGetters( [ 'loading' ] ),
     },
     methods: {
       submit ( form ) {
         if ( this.$refs.form.validate() ) {
-          console.log( 'VALID FORM' )
-          db.collection( 'users' ).add( {
-            first: 'Ada',
-            last: 'Lovelace',
-            born: 1815,
-          } )
-            .then( function ( docRef ) {
-              console.log( 'Document written with ID: ', docRef.id )
-            } )
-            .catch( function ( error ) {
-              console.error( 'Error adding document: ', error )
-            } )
+          const payload = { email: this.formData.email, password: this.formData.password }
+          this.$store.dispatch( 'logIn', payload )
         }
       },
     },
