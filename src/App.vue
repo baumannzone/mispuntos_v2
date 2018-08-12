@@ -3,7 +3,8 @@
     <v-toolbar app>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
-          <img id="favicon" src="@/assets/logo.png" width="30"/> {{ $t('title') }}
+          <img id="logo" src="@/assets/logo.png" width="30"/>
+          {{ $t('title') }}
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -52,7 +53,7 @@
 </script>
 
 <style scoped>
-  #favicon {
+  #logo {
     vertical-align: top;
   }
 
