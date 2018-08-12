@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">
+        <router-link to="/" tag="span" style="cursor: pointer" id="go-home">
           <img id="logo" src="@/assets/logo.png" width="30"/>
           {{ $t('title') }}
         </router-link>
