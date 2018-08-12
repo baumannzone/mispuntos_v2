@@ -11,7 +11,6 @@ localVue.use( VueRouter )
 
 describe( 'Testeando componente App.vue', () => {
   let wrapper
-  // vm
 
   beforeEach( () => {
     wrapper = shallowMount( App, {
