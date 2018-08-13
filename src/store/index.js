@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import account from './account'
 import snackbar from './snackbar'
+import users from './users'
 
 Vue.use( Vuex )
 
@@ -26,6 +27,7 @@ const store = new Vuex.Store( {
   modules: {
     account,
     snackbar,
+    users,
   },
 } )
 

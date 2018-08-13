@@ -15,8 +15,6 @@ const account = {
       commit( 'setLoading', true )
       return auth.signInWithEmailAndPassword( payload.email, payload.password )
         .then( ( res ) => {
-          console.debug( '<<<<< Log In >>>>>' )
-          console.log( res )
           commit( 'setUser', { email: payload.email } )
           router.push( { name: 'Admin' } )
         } )
@@ -25,8 +23,6 @@ const account = {
             text: err.message,
           }
           commit( 'showSnackBar', data )
-          console.log( 'err:' )
-          console.log( err )
         } )
         .finally( () => {
           commit( 'setLoading', false )
