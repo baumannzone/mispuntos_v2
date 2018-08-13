@@ -22,12 +22,18 @@ describe( 'Testeando componente App.vue', () => {
   } )
 
   it( 'Tiene componente Snackbar', () => {
-    const snackBar = wrapper.find( Snackbar )
-    expect( snackBar.is( Snackbar ) ).toBe( true )
+    expect( wrapper.contains( Snackbar ) )
   } )
 
   it( 'Logo es una img', () => {
     const logo = wrapper.find( '#logo' )
     expect( logo.is( 'img' ) ).toBe( true )
   } )
+
+  // it( 'Tiene footer', () => {
+  //   const footer = wrapper.find( 'v-footer-stub' )
+  //   console.debug( 'footer: ' )
+  //   console.debug( footer )
+  //   expect( footer.is( 'v-footer-stub' ) ).toBe( true )
+  // } )
 } )
