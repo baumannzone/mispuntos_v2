@@ -14,10 +14,24 @@ const router = new Router( {
     {
       path: '/admin',
       name: 'Admin',
+      // Default go to UsersList
+      redirect: { name: 'UsersList' },
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import( /* webpackChunkName: "About" */ '../views/Admin/Index' ),
+      component: () => import( /* webpackChunkName: "Admin" */ '../views/Admin/Index' ),
+      children: [
+        {
+          path: 'users',
+          name: 'UsersList',
+          component: () => import( '../views/Admin/UsersList' ),
+        },
+        {
+          path: 'users/create',
+          name: 'UsersCreate',
+          component: () => import( '../views/Admin/UsersCreate' ),
+        },
+      ],
     },
     {
       path: '/login',
