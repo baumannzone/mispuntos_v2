@@ -2,4 +2,8 @@ const api = {
   USERS: 'users',
 }
 
-export default api
+const filters = {
+  ACTIVE: 'isActive',
+}
+
+export { api, filters }

@@ -1,6 +1,6 @@
 import { db } from '@/config/'
 import router from '../router'
-import api from '@/config/api'
+import { api } from '@/config/api'
 
 const account = {
   state: {
@@ -8,12 +8,28 @@ const account = {
   },
   mutations: {
     setUsers ( state, payload ) {
-      state.user = payload
+      state.users = payload
     },
   },
   actions: {
-    getUsers ( { commit }, payload ) {
+    getAllUsers ( { commit }, payload ) {
       commit( 'setLoading', true )
+      db.collection( api.USERS )
+        .get()
+        .then( ( querySnapshot ) => {
+          const allUsers = []
+          querySnapshot.forEach( ( doc ) => {
+            console.log( doc.id, ': => ', doc.data() )
+            allUsers.push( { _id: doc.id, ...doc.data() } )
+          } )
+          commit( 'setUsers', allUsers )
+        } )
+        .catch( function ( error ) {
+          console.log( 'Error getting documents: ', error )
+        } )
+        .finally( () => {
+          commit( 'setLoading', false )
+        } )
     },
     createUser ( { commit }, payload ) {
       commit( 'setLoading', true )

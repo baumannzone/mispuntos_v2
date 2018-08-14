@@ -78,8 +78,6 @@
       submit ( form ) {
         if ( this.$refs.form.validate() ) {
           const payload = { fullName: this.formData.fullName, alias: this.formData.alias, ...this.defaultData }
-          console.log( 'payload:' )
-          console.log( payload )
           this.$store.dispatch( 'createUser', payload )
         }
       },
