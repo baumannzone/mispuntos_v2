@@ -12,6 +12,11 @@ const router = new Router( {
       component: Home,
     },
     {
+      path: '/user/:id',
+      name: 'User',
+      component: () => import( '../views/User/Index' ),
+    },
+    {
       path: '/admin',
       name: 'Admin',
       // Default go to UsersList
