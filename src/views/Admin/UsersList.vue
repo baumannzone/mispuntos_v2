@@ -41,19 +41,26 @@
           </v-menu>
         </td>
         <td>
+          <v-checkbox v-model="props.item.isActive" color="primary"
+                      @change="onCheckboxChange(props.item.isActive, props.item._id)"></v-checkbox>
+        </td>
+        <td>
           <v-btn icon small @click="updatePoints(props.item._id, 'add')">
-            <v-icon color="teal">thumb_up</v-icon>
+            <v-icon color="green lighten-2">thumb_up</v-icon>
           </v-btn>
           <v-btn icon small @click="updatePoints(props.item._id, 'subtract')">
-            <v-icon color="pink">thumb_down</v-icon>
+            <v-icon color="red lighten-3">thumb_down</v-icon>
           </v-btn>
           <v-btn icon small @click="updatePoints(props.item._id, 'use')">
-            <v-icon color="indigo">credit_card</v-icon>
+            <v-icon color="blue lighten-3">credit_card</v-icon>
+          </v-btn>
+          |
+          <v-btn icon small @click="deleteUser(props.item._id)">
+            <v-icon color="pink">delete</v-icon>
           </v-btn>
         </td>
       </template>
     </v-data-table>
-    <pre>{{ users }}</pre>
   </v-flex>
 </template>
 
@@ -71,6 +78,7 @@
           { text: 'Name', value: 'fullName' },
           { text: 'Alias', value: 'alias' },
           { text: 'Points', value: 'totalPoints' },
+          { text: 'Active', value: 'isActive' },
           { text: 'Actions', value: '', align: 'left' },
         ],
       }
@@ -81,6 +89,13 @@
     methods: {
       updatePoints ( id, type ) {
         console.log( id, type )
+      },
+      onCheckboxChange ( isActive, id ) {
+        this.$store.dispatch( 'updateUser', { id, isActive } )
+      },
+      deleteUser ( id ) {
+        console.log( id )
+        this.$store.dispatch( 'deleteUserById', id )
       },
     },
   }

@@ -1,5 +1,5 @@
-import { db } from '@/config/'
 import router from '../router'
+import { db } from '@/config/'
 import { api } from '@/config/api'
 
 const account = {
@@ -19,7 +19,7 @@ const account = {
         .then( ( querySnapshot ) => {
           const allUsers = []
           querySnapshot.forEach( ( doc ) => {
-            console.log( doc.id, ': => ', doc.data() )
+            // console.log( doc.id, ': => ', doc.data() )
             allUsers.push( { _id: doc.id, ...doc.data() } )
           } )
           commit( 'setUsers', allUsers )
@@ -45,6 +45,33 @@ const account = {
         } )
         .finally( () => {
           commit( 'setLoading', false )
+        } )
+    },
+    deleteUserById ( { commit, getters }, id ) {
+      db.collection( api.USERS ).doc( id ).delete()
+        .then( () => {
+          const users = getters.users
+          // Delete user from local data
+          users.splice( users.findIndex( ( i ) => i._id === id ), 1 )
+          commit( 'setUsers', users )
+          commit( 'showSnackBar', { text: 'Usuario borrado', color: 'success' } )
+        } )
+        .catch( ( error ) => {
+          console.error( 'Error removing document: ', error )
+          commit( 'showSnackBar', { text: 'Error borrando el usuario', color: 'error' } )
+        } )
+    },
+    updateUser ( { commit, getters }, payload ) {
+      db.collection( api.USERS ).doc( payload.id )
+        .update( {
+          isActive: payload.isActive,
+        } )
+        .then( () => {
+          console.log( 'Document successfully updated!' )
+          const users = getters.users
+          const index = users.findIndex( i => i._id === payload.id )
+          users[ index ].isActive = payload.isActive
+          commit( 'setUsers', users )
         } )
     },
   },

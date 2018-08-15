@@ -77,7 +77,12 @@
     methods: {
       submit ( form ) {
         if ( this.$refs.form.validate() ) {
-          const payload = { fullName: this.formData.fullName, alias: this.formData.alias, ...this.defaultData }
+          const payload = {
+            fullName: this.formData.fullName,
+            alias: this.formData.alias,
+            ...this.defaultData,
+            created: new Date(),
+          }
           this.$store.dispatch( 'createUser', payload )
         }
       },
