@@ -45,30 +45,40 @@
                       @change="onCheckboxChange(props.item.isActive, props.item._id)"></v-checkbox>
         </td>
         <td>
-          <v-btn icon small @click="updatePoints(props.item._id, 'add')">
+          <v-btn icon small @click="addPoints(props.item._id)">
             <v-icon color="green lighten-2">thumb_up</v-icon>
           </v-btn>
-          <v-btn icon small @click="updatePoints(props.item._id, 'subtract')">
+          <v-btn icon small @click="subtractPoints(props.item._id)">
             <v-icon color="red lighten-3">thumb_down</v-icon>
           </v-btn>
-          <v-btn icon small @click="updatePoints(props.item._id, 'use')">
+          <v-btn icon small @click="usePoints(props.item._id)">
             <v-icon color="blue lighten-3">credit_card</v-icon>
           </v-btn>
           |
-          <v-btn icon small @click="deleteUser(props.item._id)">
+          <v-btn icon small @click="openDialog(props.item._id)">
             <v-icon color="pink">delete</v-icon>
+          </v-btn>
+          <v-btn icon small @click="resetuser(props.item._id)">
+            <v-icon color="pink">refresh</v-icon>
           </v-btn>
         </td>
       </template>
     </v-data-table>
+    <DialogConfirm
+      :is-visible="dialogVisible"
+      :user="dialogUser"
+      @accept-dialog="deleteUser"
+      @cancel-dialog="dialogVisible = false"/>
   </v-flex>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import DialogConfirm from './DialogConfirm'
 
   export default {
     name: 'UsersList',
+    components: { DialogConfirm },
     created () {
       this.$store.dispatch( 'getAllUsers' )
     },
@@ -81,21 +91,84 @@
           { text: 'Active', value: 'isActive' },
           { text: 'Actions', value: '', align: 'left' },
         ],
+        dialogVisible: false,
+        dialogUser: {},
       }
     },
     computed: {
       ...mapGetters( [ 'loading', 'users' ] ),
     },
     methods: {
-      updatePoints ( id, type ) {
-        console.log( id, type )
+      addPoints ( id ) {
+        const item = { ...this.users.find( i => i._id === id ) }
+        item.totalPoints++
+        item.positivePoints++
+        item.events.push( {
+          type: 'add',
+          when: new Date(),
+        } )
+        delete item._id
+        const payload = {
+          id,
+          data: item,
+        }
+        this.$store.dispatch( 'updatePoints', payload )
+      },
+      subtractPoints ( id ) {
+        const item = { ...this.users.find( i => i._id === id ) }
+        item.totalPoints--
+        item.negativePoints++
+        item.events.push( {
+          type: 'subtract',
+          when: new Date(),
+        } )
+        delete item._id
+        const payload = {
+          id,
+          data: item,
+        }
+        this.$store.dispatch( 'updatePoints', payload )
+      },
+      usePoints ( id ) {
+        const item = { ...this.users.find( i => i._id === id ) }
+        item.totalPoints--
+        item.usedPoints++
+        item.events.push( {
+          type: 'use',
+          when: new Date(),
+        } )
+        delete item._id
+        const payload = {
+          id,
+          data: item,
+        }
+        this.$store.dispatch( 'updatePoints', payload )
       },
       onCheckboxChange ( isActive, id ) {
-        this.$store.dispatch( 'updateUser', { id, isActive } )
+        this.$store.dispatch( 'updateActive', { id, isActive } )
+      },
+      openDialog ( id ) {
+        this.dialogVisible = true
+        this.dialogUser = { ...this.users.find( i => i._id === id ) }
       },
       deleteUser ( id ) {
-        console.log( id )
+        this.dialogVisible = false
         this.$store.dispatch( 'deleteUserById', id )
+      },
+      resetuser ( id ) {
+        const item = { ...this.users.find( i => i._id === id ) }
+        item.positivePoints = 0
+        item.negativePoints = 0
+        item.totalPoints = 0
+        item.usedPoints = 0
+        item.events = []
+        item.isActive = true
+        delete item._id
+        const payload = {
+          id,
+          data: item,
+        }
+        this.$store.dispatch( 'updatePoints', payload )
       },
     },
   }

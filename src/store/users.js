@@ -13,22 +13,17 @@ const account = {
   },
   actions: {
     getAllUsers ( { commit }, payload ) {
-      commit( 'setLoading', true )
-      db.collection( api.USERS )
-        .get()
-        .then( ( querySnapshot ) => {
-          const allUsers = []
-          querySnapshot.forEach( ( doc ) => {
-            // console.log( doc.id, ': => ', doc.data() )
-            allUsers.push( { _id: doc.id, ...doc.data() } )
-          } )
-          commit( 'setUsers', allUsers )
-        } )
-        .catch( function ( error ) {
+      return db.collection( api.USERS )
+        .onSnapshot( ( doc ) => {
+          const users = []
+          if ( doc.size > 0 ) {
+            doc.docs.forEach( item => {
+              users.push( { _id: item.id, ...item.data() } )
+            } )
+          }
+          commit( 'setUsers', users )
+        }, ( error ) => {
           console.log( 'Error getting documents: ', error )
-        } )
-        .finally( () => {
-          commit( 'setLoading', false )
         } )
     },
     createUser ( { commit }, payload ) {
@@ -61,17 +56,20 @@ const account = {
           commit( 'showSnackBar', { text: 'Error borrando el usuario', color: 'error' } )
         } )
     },
-    updateUser ( { commit, getters }, payload ) {
+    updateActive ( { commit }, payload ) {
       db.collection( api.USERS ).doc( payload.id )
         .update( {
           isActive: payload.isActive,
         } )
         .then( () => {
           console.log( 'Document successfully updated!' )
-          const users = getters.users
-          const index = users.findIndex( i => i._id === payload.id )
-          users[ index ].isActive = payload.isActive
-          commit( 'setUsers', users )
+        } )
+    },
+    updatePoints ( { commit }, payload ) {
+      db.collection( api.USERS ).doc( payload.id )
+        .update( payload.data )
+        .then( () => {
+          console.log( 'Document successfully updated!' )
         } )
     },
   },
